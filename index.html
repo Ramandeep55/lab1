@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link href="/styles.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="rmn">
+      Wins: 0 - Loses: 0 - Ties: 0
+    </div>
+    <div id="radio-group">
+      <label>
+        <input type="radio" checked name="option" value="scissors" />
+        Scissors
+      </label>
+      <label>
+        <input type="radio" name="option" value="paper" />
+        Paper
+      </label>
+      <label>
+        <input type="radio" name="option" value="rock" />
+        Rock
+      </label>
+      <button type="button" id="rps-choose">Choose Option</button>
+    </div>
+      <div>
+      <h1 id=tab>You choose:</h1>
+      <h1 id="laptop">Computer choose:</h1>
+      <h2 id="decision"></h2>
+    </div>
+      <script>
+          const validOptions = ['rock', 'paper', 'scissors'];
+let playerOption = null;
+let computerOption = null;
+let tabScore = {
+  wins: 0,
+  loses: 0,
+  ties: 0
+};
+const chooseButton = document.querySelector('button#rps-choose');
+
+chooseButton.addEventListener('click', function(event) {
+  tab = getTabChoice();
+  computerChoiceIndex = randomInt(0, 2);
+  laptop = validOptions[computerChoiceIndex];
+
+  
+  document.querySelector(
+    '#tab'
+  ).innerHTML = `You choose: ${tab}`;
+
+  
+  document.querySelector(
+    '#laptop'
+  ).innerHTML = `Computer choose: ${laptop}`;
+
+  Win();
+});
+
+function Win() {
+  let resultMessage = 'Computer wins, try harder!';
+  if (tab === laptop) {
+    resultMessage = 'You both tied, play again';
+    tabScore.ties += 1;
+  } else if (
+    (tab === 'rock' && laptop === 'scissors') ||
+    (tab === 'scissors' && laptop === 'paper') ||
+    (tab === 'paper' && laptop === 'rock')
+  ) {
+    resultMessage = 'User wins, great job!';
+    tabScore.wins += 1;
+  } else {
+    tabScore.loses += 1;
+  }
+
+  updateScoreboard();
+  document.querySelector('#decision').innerHTML = resultMessage;
+}
+
+function updateScoreboard() {
+  const { wins, loses, ties } = tabScore;
+  document.querySelector(
+    '#rmn'
+  ).innerHTML = `Wins: ${wins} - Loses: ${loses} - Ties: ${ties}`;
+}
+
+function getTabChoice() {
+  const nodelist = document.querySelectorAll('input[name="option"]');
+  const elements = Array.from(nodelist);
+  const selectedOption = elements.find(({ checked = false }) => checked);
+  return selectedOption.value;
+}
+
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+      </script>
+    
+  </body>
+</html>
